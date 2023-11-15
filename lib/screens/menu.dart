@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-
-class AppItem {
-  final String name;
-  final IconData icon;
-  final Color color;
-
-  AppItem(this.name, this.icon, this.color);
-}
+import 'package:ad_infinitum/widgets/itemCard.dart';
+import 'package:ad_infinitum/widgets/left_drawer.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key? key}) : super(key: key);
 
-  final List<AppItem> items = [
-    AppItem("View Items", Icons.checklist, Colors.deepPurple),
-    AppItem("Add Item", Icons.add_shopping_cart, Colors.blue),
-    AppItem("Logout", Icons.logout, Colors.yellow),
+  final List<ShopItem> items = [
+    ShopItem("View Items", Icons.checklist, Colors.white, Colors.black),
+    ShopItem("Add Item", Icons.add_shopping_cart, Colors.white, Colors.black),
+    ShopItem("Logout", Icons.logout, Colors.white, Colors.black)
   ];
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -28,12 +22,21 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Ad Infinitum',
         ),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
       ),
+      drawer: const LeftDrawer(),
       body: SingleChildScrollView(
         // Scrolling wrapper widget
         child: Padding(
@@ -50,6 +53,7 @@ class MyHomePage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -62,7 +66,7 @@ class MyHomePage extends StatelessWidget {
                 mainAxisSpacing: 10,
                 crossAxisCount: 3,
                 shrinkWrap: true,
-                children: items.map((AppItem item) {
+                children: items.map((ShopItem item) {
                   // Iteration for each item
                   return ShopCard(item);
                 }).toList(),
@@ -71,51 +75,7 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class ShopCard extends StatelessWidget {
-  final AppItem item;
-
-  const ShopCard(this.item, {Key? key}); // Constructor
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: item.color,
-      child: InkWell(
-        // Responsive touch area
-        onTap: () {
-          // Show a SnackBar when clicked
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-                content: Text("You clicked the ${item.name} button!")));
-        },
-        child: Container(
-          // Container to hold Icon and Text
-          padding: const EdgeInsets.all(8),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
-                const Padding(padding: EdgeInsets.all(3)),
-                Text(
-                  item.name,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      backgroundColor: Colors.black,
     );
   }
 }
