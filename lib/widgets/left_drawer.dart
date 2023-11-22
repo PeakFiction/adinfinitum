@@ -4,7 +4,7 @@ import 'package:ad_infinitum/screens/itemForm.dart';
 import 'package:ad_infinitum/screens/viewItem.dart';
 
 class LeftDrawer extends StatelessWidget {
-  const LeftDrawer({super.key});
+  const LeftDrawer({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,6 @@ class LeftDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.home_outlined),
             title: const Text('Home Page'),
-            // redirect to MyHomePage
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -46,7 +45,6 @@ class LeftDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.add_shopping_cart),
             title: const Text('Add Item'),
-            // redirect to ItemFormPage
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -59,7 +57,18 @@ class LeftDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.checklist),
             title: const Text('View Items'),
-            // redirect to ViewItemPage
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ViewItemPage(),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.shopping_basket),
+            title: const Text('Product List'),
             onTap: () {
               Navigator.pushReplacement(
                 context,

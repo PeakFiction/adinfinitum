@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:ad_infinitum/widgets/left_drawer.dart';
 import 'package:ad_infinitum/models/item.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:ad_infinitum/screens/menu.dart';
+import 'dart:convert';
 
 class ItemFormPage extends StatefulWidget {
-  const ItemFormPage({super.key});
+  const ItemFormPage({Key? key});
 
   @override
   State<ItemFormPage> createState() => _ItemFormPageState();
@@ -14,11 +18,13 @@ class _ItemFormPageState extends State<ItemFormPage> {
   final _formKey = GlobalKey<FormState>();
   String _name = "";
   int _amount = 0;
-  int _price = 0;
+  int _value = 0;
   String _description = "";
+  bool _is_new = true;
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -77,7 +83,7 @@ class _ItemFormPageState extends State<ItemFormPage> {
                   ),
                   onChanged: (String? value) {
                     setState(() {
-                      _price = int.parse(value!);
+                      _value = int.parse(value!);
                     });
                   },
                   validator: (String? value) {
@@ -154,72 +160,40 @@ class _ItemFormPageState extends State<ItemFormPage> {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.red),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Item.add(
-                          Name: _name,
-                          Price: _price,
-                          Amount: _amount,
-                          Description: _description,
+                        // Send request to Django and wait for the response
+                        // TODO: Change the URL to your Django app's URL. Don't forget to add the trailing slash (/) if needed.
+                        final response = await request.postJson(
+                          "http://127.0.0.1:8000/create-flutter/", // Adjust the URL endpoint
+                          jsonEncode(<String, String>{
+                            'name': _name,
+                            'value': _value.toString(),
+                            'description': _description,
+                            'weight': _amount.toString(),
+                            'is_new': _is_new.toString(),
+                          }),
                         );
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            if (Theme.of(context).platform ==
-                                TargetPlatform.iOS) {
-                              // Show CupertinoAlertDialog on iOS
-                              return CupertinoAlertDialog(
-                                title: const Text('Item Saved!'),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Name: $_name'),
-                                      Text('Price: $_price'),
-                                      Text('Amount: $_amount'),
-                                      Text('Description: $_description'),
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  CupertinoDialogAction(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              );
-                            } else {
-                              // Show AlertDialog on other platforms
-                              return AlertDialog(
-                                title: const Text('Item Saved!'),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Name: $_name'),
-                                      Text('Price: $_price'),
-                                      Text('Amount: $_amount'),
-                                      Text('Description: $_description'),
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              );
-                            }
-                          },
-                        );
-                        _formKey.currentState!.reset();
+
+                        print("Response from server: $response");
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content:
+                                Text("New product has saved successfully!"),
+                          ));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyHomePage()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content:
+                                Text("Something went wrong, please try again."),
+                          ));
+                        }
                       }
                     },
                     child: const Text(

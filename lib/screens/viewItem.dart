@@ -1,69 +1,89 @@
 import 'package:flutter/material.dart';
-import 'package:ad_infinitum/widgets/left_drawer.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:ad_infinitum/models/item.dart';
 
 class ViewItemPage extends StatefulWidget {
-  const ViewItemPage({super.key});
+  const ViewItemPage({Key? key}) : super(key: key);
 
   @override
-  State<ViewItemPage> createState() => _ViewItemPageState();
+  _ViewItemPageState createState() => _ViewItemPageState();
 }
 
 class _ViewItemPageState extends State<ViewItemPage> {
+  Future<List<Item>> fetchItems() async {
+    // TODO: Change the URL to your Django app's URL. Don't forget to add the trailing slash (/) if needed.
+    var url = Uri.parse('http://127.0.0.1:8000/json/');
+    var response = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
+    );
+
+    // decode the response to JSON
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+
+    // convert the JSON to Item object
+    List<Item> listItem = [];
+    for (var d in data) {
+      if (d != null) {
+        listItem.add(Item.fromJson(d));
+      }
+    }
+    return listItem;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('View Items'),
-          backgroundColor: Colors.black,
-          foregroundColor: Colors.white,
-        ),
-        drawer: const LeftDrawer(),
-        body: SingleChildScrollView(
-            child: Align(
-          alignment: Alignment.topCenter,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: Item.listItem.map((Item P) {
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+      appBar: AppBar(
+        title: const Text('View Item'),
+      ),
+      body: FutureBuilder(
+        future: fetchItems(),
+        builder: (context, AsyncSnapshot<List<Item>> snapshot) {
+          if (snapshot.data == null) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Column(
+                children: [
+                  Text(
+                    "No item data available.",
+                    style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+              );
+            } else {
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (_, index) => Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.all(20.0),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            P.Name,
-                            style: const TextStyle(fontSize: 24.0),
-                          ),
-                          Text(
-                            "Price: ${P.Price}",
-                            style: const TextStyle(fontSize: 16.0),
-                          ),
-                          Text(
-                            "Amount: ${P.Amount}",
-                            style: const TextStyle(fontSize: 16.0),
-                          )
-                        ],
+                      Text(
+                        "${snapshot.data![index].fields.name}",
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      const SizedBox(height: 12.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            P.Description,
-                            style: const TextStyle(fontSize: 16.0),
-                          ),
-                        ],
-                      )
+                      const SizedBox(height: 10),
+                      Text("${snapshot.data![index].fields.value}"),
+                      const SizedBox(height: 10),
+                      Text("${snapshot.data![index].fields.description}")
                     ],
                   ),
                 ),
               );
-            }).toList(),
-          ),
-        )));
+            }
+          }
+        },
+      ),
+    );
   }
 }
