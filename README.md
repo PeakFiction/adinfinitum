@@ -226,3 +226,291 @@ Navigator.pushReplacement(
 ```
 
 This code snippet utilizes the `Navigator` to push a new route onto the navigation stack. The `pushReplacement` method replaces the current route with a new one, preventing the user from navigating back to the previous screen.
+
+# Assignment 9 README.md
+
+##  Can we retrieve JSON data without creating a model first? If yes, is it better than creating a model before retrieving JSON data?
+Yes, it is possible to retrieve JSON data without creating a model first. However, it is generally considered a better practice to create a model before retrieving JSON data, as this provides several advantages:
+
+- Improved type safety: By creating a model, you can explicitly define the structure of the JSON data, which can help to prevent errors and ensure that you are accessing the data correctly.
+- Easier code maintenance: With a model, you can access the JSON data using properties and methods, which makes your code more readable and easier to maintain.
+- Enhanced development experience: Using a model can provide a more streamlined development experience, as it can help to automate tasks such as data validation and serialization.
+
+In some cases, it may be necessary to retrieve JSON data without creating a model first. For example, you may be working with a legacy API that does not provide a well-defined schema, or you may need to parse JSON data that is dynamically generated. In these cases, you can use a JSON parser to decode the data into a generic data structure, such as a dictionary or a list.
+
+However, if possible, it is generally recommended to create a model before retrieving JSON data. This will help to ensure that your code is more reliable, maintainable, and developer-friendly.
+
+## Explain the function of CookieRequest and explain why a CookieRequest instance needs to be shared with all components in a Flutter application.
+
+In Flutter, a CookieRequest object encapsulates the cookies for an HTTP request. It provides methods for setting, getting, and removing cookies, as well as for encoding and decoding cookies from their string representation.
+
+Sharing a single CookieRequest instance across all components in a Flutter application ensures that all components have access to the same set of cookies. This is important because cookies are often used to maintain state between requests, and if different components were using different sets of cookies, this state could become inconsistent.
+
+Here are some of the benefits of sharing a single CookieRequest instance:
+
+- Consistent state: All components will have access to the same set of cookies, ensuring that state is maintained consistently across the application.
+- Reduced complexity: Sharing a single instance simplifies code management and reduces the likelihood of errors related to cookie handling.
+- Improved performance: Reusing the same instance can potentially improve performance by avoiding the overhead of creating and destroying multiple instances.
+
+In general, sharing a single CookieRequest instance is considered a good practice for managing cookies in Flutter applications. It promotes consistency, simplifies code, and can enhance performance.
+
+## Explain the mechanism of fetching data from JSON until it can be displayed on Flutter.
+Fetching and displaying data from JSON in Flutter involves a series of steps that transform raw JSON data into a structured representation that can be rendered on the UI. Here's a breakdown of the process:
+
+1. Network Request: The first step is to initiate a network request to retrieve the JSON data from the server. This is typically done using the http package in Flutter. The request involves specifying the URL of the JSON data and any necessary headers or authentication credentials.
+
+2. JSON Parsing: Once the network request is successful, the response containing the JSON data is received. The JSON data is then parsed into a Dart object using a JSON parser. This involves converting the JSON string into a structured data representation that can be easily manipulated and accessed in the Dart code.
+
+3. Data Model Definition: To facilitate the parsing process, it's recommended to create a data model that defines the structure of the JSON data. This model typically consists of Dart classes that mirror the hierarchy and properties of the JSON objects. The parser uses this model to map the JSON data into corresponding Dart objects.
+
+4. Data Processing and Transformation: Once the JSON data is parsed into Dart objects, it may need further processing or transformation before being displayed on the UI. This could involve data manipulation, calculations, or filtering.
+
+5. UI Rendering: Finally, the processed data is used to render the UI elements. Flutter provides various widgets and layouts to construct the desired visual representation of the data. This involves binding the data to the UI elements, such as lists, cards, or text displays.
+
+## Explain the authentication mechanism from entering account data on Flutter to Django authentication completion and the display of menus on Flutter.
+The authentication mechanism from entering account data on Flutter to Django authentication completion and the display of menus on Flutter involves a series of steps that verify user credentials, establish a session, and authorize access to protected resources. Here's a detailed explanation of the process:
+
+1. Account Data Entry on Flutter: The user enters their account credentials, such as username and password, into a login form or dialog presented by the Flutter application. These credentials are captured and securely stored within the application's memory or temporary storage.
+
+2. Credentials Submission to Django: The Flutter application sends a network request to the Django server, typically using the HTTP protocol, containing the user's credentials. This request is usually made to a dedicated authentication endpoint on the Django server.
+
+3. Django Authentication Process: The Django server receives the authentication request and performs the necessary authentication checks. These checks typically involve validating the user's credentials against a database or other authentication system. If the credentials are valid, Django creates an authentication token, which is a unique identifier associated with the logged-in user.
+
+4. Token Generation and Response: Django generates an authentication token and sends it back to the Flutter application as part of the response to the authentication request. The token may be sent in the form of a cookie, a header, or embedded within the response body.
+
+5. Token Storage and Session Establishment: The Flutter application receives the authentication token and stores it securely within the application's memory or persistent storage. This token establishes a session, allowing the user to access protected resources.
+
+6. Menu Display on Flutter: Upon successful authentication, the Flutter application fetches the user's menu information from the Django server. The menu information typically consists of a list of authorized actions or resources that the user is allowed to access.
+
+7. Menu Rendering and Navigation: The Flutter application receives the menu information and parses it into a structured format. The menu data is then used to render the appropriate menu UI elements, such as navigation bars, sidebars, or dropdown menus. The user can interact with the menu elements to navigate to authorized areas of the application.
+
+8. Authorization Checks: Throughout the application, authorization checks are performed to ensure that the user is only granted access to resources that they are permitted to view or modify. These checks typically involve verifying the user's identity based on the stored authentication token and comparing it against the access control rules defined in the Django application.
+
+9. Token Refresh and Session Maintenance: To maintain the user's session and prevent it from expiring prematurely, the Flutter application may implement a token refresh mechanism. This mechanism periodically sends a request to the Django server to renew the authentication token, ensuring continued access to protected resources.
+
+10. Logout and Session Termination: When the user logs out, the Flutter application invalidates the stored authentication token and removes it from memory or persistent storage. This effectively terminates the user's session and prevents them from accessing protected resources until they authenticate again.
+
+## List all the widgets you used in this assignment and explain their respective functions.
+In addition to the widgets I use in the previous assignment, I'll go ahead and explain only the ones that are new which are in ```login.dart```
+
+MaterialApp: The root widget of the Flutter application, responsible for providing the overall theme and navigation.
+
+Scaffold: Provides the basic structure of the page, including the app bar, body, and bottom navigation.
+
+AppBar: Displays the application title and provides navigation actions.
+
+Container: A widget used to group other widgets together and apply padding.
+
+Column: Arranges widgets vertically within the container.
+
+TextField: A text input field used for user input, such as username and password.
+
+SizedBox: Adds empty space between widgets.
+
+ElevatedButton: A raised button used to trigger actions, such as login.
+
+AlertDialog: Displays a modal dialog with a message and action buttons.
+
+TextButton: A simple button used for actions within dialogs.
+
+
+## Explain how you implement the checklist above step by step! (not just following the tutorial).
+To preface, I can't really divide this into sections as per step so I'll narrate it instead and tell you what I've gone ahead and do to achieve the checklists. I first created a django app within my django app called authentication, and have it integrate with the flutter system.
+
+Using this code in the authentication's views.py:
+```
+from django.shortcuts import render
+from django.contrib.auth import authenticate, login as auth_login
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            auth_login(request, user)
+            # Successful login status.
+            return JsonResponse({
+                "username": user.username,
+                "status": True,
+                "message": "Login successful!"
+                # Add other data if you want to send data to Flutter.
+            }, status=200)
+        else:
+            return JsonResponse({
+                "status": False,
+                "message": "Login failed, account disabled."
+            }, status=401)
+
+    else:
+        return JsonResponse({
+            "status": False,
+            "message": "Login failed, check email or password again."
+        }, status=401)
+```
+
+and this in its urls.py:
+```
+from django.urls import path
+from authentication.views import login
+
+app_name = 'authentication'
+
+urlpatterns = [
+    path('login/', login, name='login'),
+]
+```
+
+Then I added ```path('auth/', include('authentication.urls'))``` in my main django app's urls.py.
+
+To integrate it, I downloaded the packages provided by the TAs using these commands:
+```
+flutter pub add provider
+flutter pub add pbp_django_auth
+```
+
+And I added a CookieRequest to all child widgets, specifically in my main.dart, as such:
+
+```
+...
+  Widget build(BuildContext context) {
+    return Provider(
+      create: (_) {
+        CookieRequest request = CookieRequest();
+        return request;
+      },
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+...
+```
+
+Next I created a login.dart file for the login page that is placed in the screens directory, and redirected the home in ```main.dart``` to the ```LoginPage()``` instead of ```MyHomePage```. Such that when opening the app, it prompts the user to log in first. 
+
+Next, since I already have item.dart from the previous assignment, all I did was change it or rewrite it to better suit my Django Website's Model using Quicktype.
+
+Next, I added an http dependency in the ```AndroidManifest.xml``` file by adding this code:
+
+```
+...
+    <application>
+    ...
+    </application>
+    <!-- Required to fetch data from the Internet. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+...
+```
+
+To view the items or fetch data from django, I edited a few tids and bits in my ```viewItem.dart ```, changing it to add a url and fetch the necessary data. And I rerouted the button in ```left_drawer.dart``` such that it routes to the ```viewItem.dart```. I then also rerouted the button in the main page too, such that it also goes to ```viewItem.dart``` when pressed.
+
+Now, to integrate the flutter form with the django service, i.e. making it so that I can add items to django using my app, I first added this view function in my main django website app:
+
+
+```
+@csrf_exempt
+@login_required
+def create_product_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        new_product = Product.objects.create(
+            user=request.user,
+            name=data["name"],
+            value=int(data["value"]),
+            description=data["description"],
+            weight=int(data["weight"]),
+            is_new=bool(data["is_new"])
+        )
+
+        new_product.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+```
+
+And added a path in the urls.py
+```
+    path('create-flutter/', create_product_flutter, name='create_product_flutter'),
+```
+
+Next, in the itemForm.dart, I added this request variable:
+```
+final request = context.watch<CookieRequest>();
+```
+
+and this on the ```onPressed``` block, according to my django app app models.
+```
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        // Send request to Django and wait for the response
+                        // TODO: Change the URL to your Django app's URL. Don't forget to add the trailing slash (/) if needed.
+                        final response = await request.postJson(
+                          "http://127.0.0.1:8000/create-flutter/", // Adjust the URL endpoint
+                          jsonEncode(<String, String>{
+                            'name': _name,
+                            'value': _value.toString(),
+                            'description': _description,
+                            'weight': _amount.toString(),
+                            'is_new': _is_new.toString(),
+                          }),
+                        );
+```
+
+Next is implementing the Logout Feature. To do that, I added another views.py function for the authentication django app
+```
+@csrf_exempt
+def logout(request):
+    username = request.user.username
+
+    try:
+        auth_logout(request)
+        return JsonResponse({
+            "username": username,
+            "status": True,
+            "message": "Logged out successfully!"
+        }, status=200)
+    except:
+        return JsonResponse({
+        "status": False,
+        "message": "Logout failed."
+        }, status=401)
+```
+
+and rerouted it in the urls.py:
+```
+    path('logout/', logout, name='logout'),
+```
+
+Then, in the ```itemCard.dart```, same thing as before. I added the request variable:
+
+```
+    final request = context.watch<CookieRequest>();
+```
+
+And have made it such, when the item.name is Logout, it logs you out:
+```
+          } else if (item.name == "Logout") {
+            final response = await request.logout(
+                // TODO: Change the URL to your Django app's URL. Don't forget to add the trailing slash (/) if needed.
+                "http://127.0.0.1:8000/auth/logout/");
+            String message = response["message"];
+            if (response['status']) {
+              String uname = response["username"];
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("$message Good bye, $uname."),
+              ));
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("$message"),
+              ));
+            }
+          }
+```
